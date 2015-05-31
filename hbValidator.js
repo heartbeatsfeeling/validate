@@ -1,5 +1,5 @@
 /*基于JQ的验证插件*/ 
-;(function($) {
+;(function($) {//
 	/*validTip 为验证提示方法包含 三个对像 你也可以自己定义 一个validTip对像
 		right 正确后的提示
 		wrong错误提示
