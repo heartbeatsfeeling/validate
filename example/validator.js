@@ -24,10 +24,16 @@ validator.get('na').result();//验证结果*/
 		return new  validator.prototype.init(config);
 	};
 	validator.fn=validator.prototype={
-		init:function(config){
-			
+		init:function(config){//初始化
+			this[config.id]=this.api;
 		},
-		validRules : { //验证规则
+		get:function(id){//获取验证id
+			return this[id]
+		},
+		api:function(){//对外接口
+
+		},
+		validRexp : { //验证规则
 			isEmail: /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i, //电子邮件
 			isIdnumber: /^\d{6}(?:((?:19|20)\d{2})(?:0[1-9]|1[0-2])(?:0[1-9]|[1-2]\d|3[0-1])\d{3}(?:x|X|\d)|(?:\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1-2]\d|3[0-1])\d{3}))$/, //身份证
 			isPhone: /^(\+?0?86\-?)?1[345789]\d{9}$/, //手机号
@@ -35,5 +41,9 @@ validator.get('na').result();//验证结果*/
 		}
 	};
 	validator.prototype.init.prototype=validator.fn;
-	window['validator']=validator;
+	if (typeof exports !== 'undefined') {
+		module.exports = validator
+	} else {
+		window['validator']=validator;
+	};
 })(jQuery);
