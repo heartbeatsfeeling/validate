@@ -8,17 +8,20 @@
 			tipPlacement:function(element,text){
 
 			},
+			defaultValue:"请输入文字",
 			wrong:"输入的错误",
 			right:"正确",
 			empty:'为空',
 			focus:"请您输入",
 			required:true,//根据元素判断type ，确定click blur change 
-			//handler:'core',
-			limit:/\d/
+			limit:/\d/ [string/regexp]
 		}
 	}
 });
-validator.get('na').result();//验证结果*/
+validator.get('na').valid('a');//单独验证a
+validator.get('na').valid()//.result();//验证全部
+validator.get('na').trigger('a','error','出错了',tipPlacement);//触发a error
+*/
 ;(function($){
 	var validator=function(config){
 		return new  validator.prototype.init(config);
@@ -31,6 +34,12 @@ validator.get('na').result();//验证结果*/
 			return this[id]
 		},
 		api:function(){//对外接口
+
+		},
+		addMethod:function(){
+
+		},
+		triggerValid:function(){
 
 		},
 		validRexp : { //验证规则
