@@ -30,12 +30,19 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 	var validator = function(config) {
 		var rule=config.rules;
 		$.each(rule,function(key,item){
+			//
 			total[key]=item;
 		});
 		rules[config.id] = config.rules;
 	};
 	validator.get = function(id) {
 		return list[id] = new create(id);
+	};
+	var _focus=function(){
+
+	};
+	var _blur=function(){
+
 	};
 	var create = function(id) {
 		this.element=rules[id];
