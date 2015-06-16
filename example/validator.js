@@ -37,7 +37,11 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 	};
 	create.prototype = {
 		valid: function(id) {
-
+			if(id){
+				console.log(id);
+			}else{
+				console.log(this.element);
+			};
 		},
 		triggerValid: function(id,type,message,tipPlacement) {
 
