@@ -24,24 +24,35 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 */
 ;
 (function($) {
+	var rules={};
+	var list = {};
+	var total={};
 	var validator = function(config) {
-		validator.rules[config.id] = config.rules;
+		var rule=config.rules;
+		$.each(rule,function(key,item){
+			total[key]=item;
+		});
+		rules[config.id] = config.rules;
 	};
-	validator.rules={};
-	validator.list = {};
 	validator.get = function(id) {
-		return validator.list[id] = new create(id);
+		return list[id] = new create(id);
 	};
 	var create = function(id) {
-		this.element=validator.rules[id];
+		this.element=rules[id];
 	};
 	create.prototype = {
 		valid: function(id) {
+			var _this=this;
 			if(id){
-				console.log(id);
+				_this.validHander(total[id])
 			}else{
-				console.log(this.element);
+				$.each(this.element,function(key,item){
+					_this.validHander(item);
+				});
 			};
+		},
+		validHander:function(id){
+			console.log(id)
 		},
 		triggerValid: function(id,type,message,tipPlacement) {
 
