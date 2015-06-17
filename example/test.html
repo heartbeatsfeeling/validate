@@ -7,6 +7,14 @@
 	<script type="text/javascript" src="validator.js"></script>
 </head>
 <body>
+	<div class="common">
+		<input type="text" id='a'>
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<input type="text" id='b'>
+		<div class="tip"></div>
+	</div>
 	<script>
 		validator({
 			id:"na",
@@ -15,20 +23,20 @@
 			},
 			rules:{
 				'a':{
-					tipPlacement:function(element,text){
-
+					tipPlacement:function(element,tip){
+						element.closest('.common').find('.tip').html(tip);
 					},
-					defaultValue:"请输入文字",
 					wrong:"输入的错误",
 					right:"正确",
 					empty:'为空',
 					focus:"请您输入",
 					required:true,
-					limit:/\d/
+					limit:/^\d+$/
 				},
 				'b':{
-					tipPlacement:function(element,text){
+					tipPlacement:function(element,error){
 
+						element.closest('.common').find('.tip').append(error);
 					},
 					defaultValue:"请输入文字",
 					wrong:"输入的错误",
