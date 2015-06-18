@@ -93,19 +93,23 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 	create.prototype = {
 		valid: function(id) {
 			var _this=this;
+			var result=true;
 			if(id){
-				_this.validHander(total[id])
+				result= _this.validHander(id)
 			}else{
-				$.each(this.element,function(key,item){
-					_this.validHander(item);
+				$.each(this.element,function(id,item){
+					result=_this.validHander(id)?result:false;
 				});
 			};
+			return result;
 		},
 		validHander:function(id){
-			console.log(id)
+			var $this=$('#'+id);
+			var options=total[id];
+			return _blur($this,options)
 		},
 		triggerValid: function(id,type,message,tipPlacement) {
-
+			//todo
 		}
 	};
 	if (typeof exports !== 'undefined') {

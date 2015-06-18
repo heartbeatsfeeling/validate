@@ -34,9 +34,8 @@
 					limit:/^\d+$/
 				},
 				'b':{
-					tipPlacement:function(element,error){
-
-						element.closest('.common').find('.tip').append(error);
+					tipPlacement:function(element,tip){
+						element.closest('.common').find('.tip').html(tip);
 					},
 					defaultValue:"请输入文字",
 					wrong:"输入的错误",
