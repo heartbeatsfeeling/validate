@@ -19,8 +19,8 @@
 		validator({
 			id:"na",
 			tipPlacement:function(element,tip){
-					element.closest('.common').find('.tip').html(tip);
-				},
+				element.closest('.common').find('.tip').html(tip);
+			},
 			rules:{
 				'a':{
 					wrong:"输入的错误",
@@ -28,7 +28,7 @@
 					empty:'为空',
 					focus:"请您输入",
 					required:true,
-					limit:/^\d+$/
+					limit:/^[\u4e00-\u9fa5]+$/
 				},
 				'b':{
 					defaultValue:"请输入b",

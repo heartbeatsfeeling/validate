@@ -28,7 +28,6 @@ validator({
 validator.get('na').valid('a');//单独验证a
 validator.get('na').valid()//.result();//验证全部
 validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a error
-节点隐藏，返回真 
 为空的处理 有点不对。。
 */
 ;
@@ -66,7 +65,7 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		var tipPlacement = options.tipPlacement || configTipPlacement;
 		var focusText = options.focus || defaultText.focus;
 		if (focusText) {
-			tipPlacement(options.element, "<div class='validator-focus'>" + focusText + "</div>");
+			tipPlacement(options.element, "<span class='validator-focus'>" + focusText + "</span>");
 		};
 	};
 	var _blur = function(options) {
@@ -79,29 +78,34 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		var wrongText = options.wrong || defaultText.wrong;
 		var emptyText = options.empty || defaultText.empty;
 		var tipPlacement = options.tipPlacement || configTipPlacement;
+		var rightText=options.right||defaultText.right;
+		if($element.is(":hidden")){//隐藏
+			tipPlacement($element, "<span class='validator-blur validator-right'></span>");
+			return true;
+		};
 		if (!value || value === options.defaultValue) { //为空
 			if (options.required) { //必填
-				tipPlacement($element, "<div class='validator-blur'>" + emptyText + "</div>");
+				tipPlacement($element, "<span class='validator-blur validator-empty'>" + emptyText + "</span>");
 				return false;
 			} else {
-				tipPlacement($element, "");
+				tipPlacement($element, "<span class='validator-blur validator-right'>"+rightText+"</span>");
 				return true;
 			}
 		} else {
 			if (options.required) {
 				if (limit.test(value)) {
-					tipPlacement($element, "");
+					tipPlacement($element, "<span class='validator-blur validator-right'>"+rightText+"</span>");
 					return true;
 				} else {
-					tipPlacement($element, "<div class='validator-blur'>" + wrongText + "</div>");
+					tipPlacement($element, "<span class='validator-blur validator-wrong'>" + wrongText + "</span>");
 					return false;
 				}
 			} else {
 				if (limit.test(value)) {
-					tipPlacement($element, "");
+					tipPlacement($element, "<span class='validator-blur validator-right'>"+rightText+"</span>");
 					return true;
 				} else {
-					tipPlacement($element, "<div class='validator-blur'>" + wrongText + "</div>");
+					tipPlacement($element, "<span class='validator-blur validator-wrong'>" + wrongText + "</span>");
 					return false;
 				}
 			}
