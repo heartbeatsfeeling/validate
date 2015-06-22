@@ -3,7 +3,7 @@ validator({
 	id:"na",
 	tipPlacement:function(element,tip){
 			element.closest('.common').find('.tip').html(tip);
-		},
+	},
 	rules:{
 		'a':{
 			defaultValue:"请输入a",
@@ -62,14 +62,18 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		return list[id] = new create(id);
 	};
 	var _focus = function(options) {
-		var tipPlacement = options.tipPlacement || configTipPlacement;
+		var tipPlacementFn = options.tipPlacement || configTipPlacement;
 		var focusText = options.focus || defaultText.focus;
-		if (focusText) {
-			tipPlacement(options.element, "<span class='validator-focus'>" + focusText + "</span>");
+		if (focusText) {//留着以后用
+			_tipPlacementRender(options.element,"validator-focus",focusText,tipPlacementFn)
 		};
 	};
 	var _blur = function(options) {
 		return _validCore(options);
+	};
+	var _tipPlacementRender=function($element,className,text,tipPlacement){
+		var html="<span class='{{classname}}'>{{text}}</span>".replace("{{classname}}",className).replace("{{text}}",text )
+		tipPlacement($element,html);
 	};
 	var _validCore = function(options) { //核心验证方法
 		var $element = options.element;
@@ -79,33 +83,50 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		var emptyText = options.empty || defaultText.empty;
 		var tipPlacement = options.tipPlacement || configTipPlacement;
 		var rightText=options.right||defaultText.right;
+		var html="<span class='{{classname}}'>{{text}}</span>";
+		var classNames='';
+		var validText='';
 		if($element.is(":hidden")){//隐藏
-			tipPlacement($element, "<span class='validator-blur validator-right'></span>");
+			classNames="validator-blur validator-right";
+			validText='';
+			tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 			return true;
 		};
 		if (!value || value === options.defaultValue) { //为空
 			if (options.required) { //必填
-				tipPlacement($element, "<span class='validator-blur validator-empty'>" + emptyText + "</span>");
+				classNames="validator-blur validator-empty";
+				validText=emptyText;
+				tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 				return false;
 			} else {
-				tipPlacement($element, "<span class='validator-blur validator-right'>"+rightText+"</span>");
+				classNames="validator-blur validator-right";
+				validText=rightText;
+				tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 				return true;
 			}
 		} else {
 			if (options.required) {
 				if (limit.test(value)) {
-					tipPlacement($element, "<span class='validator-blur validator-right'>"+rightText+"</span>");
+					classNames="validator-blur validator-right";
+					validText=rightText;
+					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 					return true;
 				} else {
-					tipPlacement($element, "<span class='validator-blur validator-wrong'>" + wrongText + "</span>");
+					classNames="validator-blur validator-wrong";
+					validText=wrongText;
+					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 					return false;
 				}
 			} else {
 				if (limit.test(value)) {
-					tipPlacement($element, "<span class='validator-blur validator-right'>"+rightText+"</span>");
+					classNames="validator-blur validator-right";
+					validText=rightText;
+					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 					return true;
 				} else {
-					tipPlacement($element, "<span class='validator-blur validator-wrong'>" + wrongText + "</span>");
+					classNames="validator-blur validator-wrong";
+					validText=wrongText;
+					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
 					return false;
 				}
 			}
