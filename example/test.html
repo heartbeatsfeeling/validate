@@ -15,6 +15,14 @@
 		<input type="text" id='b' value=''>
 		<div class="tip"></div>
 	</div>
+	<div class="common">
+		<input type="text" id='c' value=''>
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<textarea id='d'></textarea>
+		<div class="tip"></div>
+	</div>
 	<script>
 		validator({
 			id:"na",
@@ -32,10 +40,17 @@
 				},
 				'b':{
 					wrong:"输入的错误",
+					right:"",
+					empty:'为空',
+					focus:"请您输入"
+				},
+				'c':{
+					wrong:"输入的错误",
 					right:"正确",
 					empty:'为空',
 					focus:"请您输入",
-					required:true
+					required:true,
+					limit:"number"
 				}
 			}
 		});

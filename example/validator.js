@@ -1,37 +1,4 @@
-/*
-validator({
-	id:"na",
-	tipPlacement:function(element,tip){
-			element.closest('.common').find('.tip').html(tip);
-	},
-	rules:{
-		'a':{
-			defaultValue:"请输入a",
-			wrong:"输入的错误",
-			right:"正确",
-			empty:'为空',
-			focus:"请您输入",
-			required:true,
-			limit:/^\d+$/
-		},
-		'b':{
-			defaultValue:"请输入b",
-			wrong:"输入的错误",
-			right:"正确",
-			empty:'为空',
-			focus:"请您输入",
-			required:true,
-			limit:/^\d+$/
-		}
-	}
-});
-validator.get('na').valid('a');//单独验证a
-validator.get('na').valid()//.result();//验证全部
-validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a error
-为空的处理 有点不对。。
-*/
-;
-(function($) {
+;(function($) {
 	var rules = {};
 	var list = {};
 	var total = {};
@@ -45,22 +12,57 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		return new validator.init(config);
 	};
 	validator.init = function(config) {
+		var _this=this;
 		$.each(config.rules, function(key, item) {
 			var $element = $('#' + key);
+			var limit=item.limit;
+			var limitType = $.type(limit);
 			item.element = $element;
-			$element.on('focus', function() {
-				_focus(item);
-			});
-			$element.on('blur', function() {
-				_blur(item);
-			});
+			switch (limitType) { //regexp undefined string
+				case 'regexp':
+					$element.on('focus', function() {
+						_focus(item);
+					});
+					$element.on('blur', function() {
+						_blur(item);
+					});
+					break;
+				case 'undefined':
+					$element.on('focus', function() {
+						_focus(item);
+					});
+					$element.on('blur', function() {
+						_blur(item);
+					});
+					break;
+				case 'string':
+					$element.on('focus', function() {
+						_focus(item);
+					});
+					$element.on('blur', function() {
+						//这里少验证
+						validator.addMethod[limit](item);
+					});
+					break;
+			};
 			total[key] = item;
 		});
 		configTipPlacement = config.tipPlacement || noop;
 		rules[config.id] = config.rules;
-	}
-	validator.addMethod ={};
-	$.extend(validator,validator.addMethod);
+	};
+	validator.addMethod = {
+		number: function(options) {
+			var reg = /^\d+$/;
+			options.limit = reg;
+			_validCore(options);
+		},
+		email: function(options) {
+			var reg = /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i;
+			options.limit = reg;
+			_validCore(options);
+		}
+	};
+	//$.extend(validator, validator.addMethod);
 	validator.get = function(id) {
 		return list[id] = new create(id);
 	};
