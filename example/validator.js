@@ -62,6 +62,12 @@
 	validator.get = function(id) {
 		return list[id] = new create(id);
 	};
+	var _classNames={
+		focus:['validator-focus'],
+		right:['validator-right'],
+		empty:['validator-empty'],
+		wrong:['validator-wrong']
+	};
 	var _focus = function(options) {
 		var tipPlacement = options.tipPlacement || configTipPlacement;
 		var focusText = options.focus;
@@ -87,19 +93,19 @@
 		var classNames = '';
 		var validText = '';
 		if ($element.is(":hidden")) { //隐藏
-			classNames = "validator-blur validator-right";
+			classNames =_classNames.right.join('');
 			validText = '';
 			_tipPlacementRender($element, classNames, validText, tipPlacement)
 			return true;
 		};
 		if (!value || value === options.defaultValue) { //为空
 			if (options.required) { //必填
-				classNames = "validator-blur validator-empty";
+				classNames =_classNames.empty.join('');
 				validText = emptyText;
 				_tipPlacementRender($element, classNames, validText, tipPlacement)
 				return false;
 			} else {
-				classNames = "validator-blur validator-right";
+				classNames =_classNames.right.join('');
 				validText = rightText;
 				_tipPlacementRender($element, classNames, validText, tipPlacement)
 				return true;
@@ -107,24 +113,24 @@
 		} else {
 			if (options.required) {
 				if (!limit || $.type(limit) === 'regexp' && limit.test(value)) {
-					classNames = "validator-blur validator-right";
+					classNames =_classNames.right.join('');
 					validText = rightText;
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return true;
 				} else {
-					classNames = "validator-blur validator-wrong";
+					classNames =_classNames.wrong.join('');
 					validText = wrongText;
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return false;
 				}
 			} else {
 				if (!limit||$.type(limit) === 'regexp' && limit.test(value)) {
-					classNames = "validator-blur validator-right";
+					classNames =_classNames.right.join('');
 					validText = rightText;
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return true;
 				} else {
-					classNames = "validator-blur validator-wrong";
+					classNames = _classNames.wrong.join('');
 					validText = wrongText;
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return false;
@@ -169,7 +175,6 @@
 					break;
 				default:
 			}
-			
 		},
 		triggerValid: function(id, type, message, tipPlacement) {
 			//todo
