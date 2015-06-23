@@ -39,12 +39,10 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 	var defaultText = {
 		empty: '不能为空',
 		wrong: "输入有错误",
-		right: "",
-		focus: ""
+		right: ""
 	};
 	var validator = function(config) {
-		var rule = config.rules;
-		$.each(rule, function(key, item) {
+		$.each(config.rules, function(key, item) {
 			var $element = $('#' + key);
 			item.element = $element;
 			$element.on('focus', function() {
@@ -54,7 +52,7 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 				_blur(item);
 			});
 			total[key] = item;
-		})
+		});
 		configTipPlacement = config.tipPlacement||noop;
 		rules[config.id] = config.rules;
 	};
@@ -62,10 +60,10 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		return list[id] = new create(id);
 	};
 	var _focus = function(options) {
-		var tipPlacementFn = options.tipPlacement || configTipPlacement;
-		var focusText = options.focus || defaultText.focus;
-		if (focusText) {//留着以后用
-			_tipPlacementRender(options.element,"validator-focus",focusText,tipPlacementFn)
+		var tipPlacement = options.tipPlacement || configTipPlacement;
+		var focusText = options.focus;
+		if (focusText) {
+			_tipPlacementRender(options.element,"validator-focus",focusText,tipPlacement)
 		};
 	};
 	var _blur = function(options) {
@@ -89,44 +87,44 @@ validator.get('na').triggerValid('a','error','出错了',tipPlacement);//触发a
 		if($element.is(":hidden")){//隐藏
 			classNames="validator-blur validator-right";
 			validText='';
-			tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+			_tipPlacementRender($element,classNames,validText,tipPlacement)
 			return true;
 		};
 		if (!value || value === options.defaultValue) { //为空
 			if (options.required) { //必填
 				classNames="validator-blur validator-empty";
 				validText=emptyText;
-				tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+				_tipPlacementRender($element,classNames,validText,tipPlacement)
 				return false;
 			} else {
 				classNames="validator-blur validator-right";
 				validText=rightText;
-				tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+				_tipPlacementRender($element,classNames,validText,tipPlacement)
 				return true;
 			}
 		} else {
 			if (options.required) {
-				if (limit.test(value)) {
+				if (!limit||$.type(limit)==='regexp'&&limit.test(value)) {
 					classNames="validator-blur validator-right";
 					validText=rightText;
-					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+					_tipPlacementRender($element,classNames,validText,tipPlacement)
 					return true;
 				} else {
 					classNames="validator-blur validator-wrong";
 					validText=wrongText;
-					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+					_tipPlacementRender($element,classNames,validText,tipPlacement)
 					return false;
 				}
 			} else {
-				if (limit.test(value)) {
+				if ($.type(limit)==='regexp'&&limit.test(value)) {
 					classNames="validator-blur validator-right";
 					validText=rightText;
-					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+					_tipPlacementRender($element,classNames,validText,tipPlacement)
 					return true;
 				} else {
 					classNames="validator-blur validator-wrong";
 					validText=wrongText;
-					tipPlacement($element, html.replace("{{classname}}",classNames).replace("{{text}}",validText ));
+					_tipPlacementRender($element,classNames,validText,tipPlacement)
 					return false;
 				}
 			}

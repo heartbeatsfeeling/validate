@@ -12,7 +12,7 @@
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="text" id='b' value='请输入b'>
+		<input type="text" id='b' value=''>
 		<div class="tip"></div>
 	</div>
 	<script>
@@ -31,13 +31,11 @@
 					limit:/^[\u4e00-\u9fa5]+$/
 				},
 				'b':{
-					defaultValue:"请输入b",
 					wrong:"输入的错误",
 					right:"正确",
 					empty:'为空',
 					focus:"请您输入",
-					//required:true,
-					limit:/^\d+$/
+					required:true
 				}
 			}
 		});
