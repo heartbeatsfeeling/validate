@@ -1,4 +1,5 @@
-;(function($) {
+;
+(function($) {
 	var rules = {};
 	var list = {};
 	var total = {};
@@ -6,42 +7,37 @@
 	var defaultText = {
 		empty: '不能为空',
 		wrong: "输入有错误",
-		right: ""
+		right: "",
+		focus:""
 	};
 	var validator = function(config) {
 		return new validator.init(config);
 	};
 	validator.init = function(config) {
-		var _this=this;
+		var _this = this;
 		$.each(config.rules, function(key, item) {
 			var $element = $('#' + key);
-			var limit=item.limit;
+			var limit = item.limit;
 			var limitType = $.type(limit);
 			item.element = $element;
+			$element.on('focus', function() {
+				_focus(item);
+			});
 			switch (limitType) { //regexp undefined string
 				case 'regexp':
-					$element.on('focus', function() {
-						_focus(item);
-					});
-					$element.on('blur', function() {
-						_blur(item);
-					});
-					break;
 				case 'undefined':
-					$element.on('focus', function() {
-						_focus(item);
-					});
 					$element.on('blur', function() {
-						_blur(item);
+						_validCore(item);
 					});
 					break;
 				case 'string':
-					$element.on('focus', function() {
-						_focus(item);
-					});
 					$element.on('blur', function() {
-						//这里少验证
-						validator.addMethod[limit](item);
+						var fn=validator.addMethod[limit];
+						if($.type(fn)==='function'){
+							fn(item);
+						}else{
+							throw limit+' is not function'
+						};
 					});
 					break;
 			};
@@ -54,12 +50,12 @@
 		number: function(options) {
 			var reg = /^\d+$/;
 			options.limit = reg;
-			_validCore(options);
+			return _validCore(options);
 		},
 		email: function(options) {
 			var reg = /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i;
 			options.limit = reg;
-			_validCore(options);
+			return _validCore(options);
 		}
 	};
 	//$.extend(validator, validator.addMethod);
@@ -88,7 +84,6 @@
 		var emptyText = options.empty || defaultText.empty;
 		var tipPlacement = options.tipPlacement || configTipPlacement;
 		var rightText = options.right || defaultText.right;
-		var html = "<span class='{{classname}}'>{{text}}</span>";
 		var classNames = '';
 		var validText = '';
 		if ($element.is(":hidden")) { //隐藏
@@ -123,7 +118,7 @@
 					return false;
 				}
 			} else {
-				if ($.type(limit) === 'regexp' && limit.test(value)) {
+				if (!limit||$.type(limit) === 'regexp' && limit.test(value)) {
 					classNames = "validator-blur validator-right";
 					validText = rightText;
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
@@ -141,7 +136,7 @@
 	var create = function(id) {
 		this.element = rules[id];
 	};
-	create.prototype = {
+	create.prototype = {//最后验证有错误，先放着
 		valid: function(id) {
 			var _this = this;
 			var result = true;
@@ -156,7 +151,25 @@
 		},
 		validHander: function(id) {
 			var options = total[id];
-			return _blur(options)
+			var limit=options.limit;
+			var limitType=$.type(limit);
+			var fn=noop;
+			switch(limitType){
+				case 'regexp':
+				case 'undefined':
+					return _validCore(options)
+					break;
+				case 'string':
+					fn=validator.addMethod[limit];
+					if($.type(fn)==='function'){
+						return fn(options)
+					}else{
+						return false;
+					}
+					break;
+				default:
+			}
+			
 		},
 		triggerValid: function(id, type, message, tipPlacement) {
 			//todo

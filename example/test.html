@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div class="common">
-		<input type="text" id='a' >
+		<input type="text" id='a'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
@@ -24,6 +24,9 @@
 		<div class="tip"></div>
 	</div>
 	<script>
+		validator.addMethod.isString=function(options){
+			var reg=/^[a-z||A-Z]+$/;
+		};
 		validator({
 			id:"na",
 			tipPlacement:function(element,tip){
