@@ -1,10 +1,11 @@
+//total 需要更好的默认配置
 ;
 (function($) {
 	var rules = {};
 	var list = {};
 	var total = {};
 	var configTipPlacement = null;
-	var defaultText = {
+	var defaultOptions={
 		empty: '不能为空',
 		wrong: "输入有错误",
 		right: "",
@@ -15,10 +16,12 @@
 	};
 	validator.init = function(config) {
 		var _this = this;
+		configTipPlacement = config.tipPlacement || noop;
 		$.each(config.rules, function(key, item) {
 			var $element = $('#' + key);
 			var limit = item.limit;
 			var limitType = $.type(limit);
+			defaultOptions.tipPlacement=item.tipPlacement||configTipPlacement;
 			item.element = $element;
 			$element.on('focus', function() {
 				_focus(item);
@@ -41,9 +44,11 @@
 					});
 					break;
 			};
+			//整理数据
+			$.extend(item,defaultOptions);
+			console.log(item)
 			total[key] = item;
 		});
-		configTipPlacement = config.tipPlacement || noop;
 		rules[config.id] = config.rules;
 	};
 	validator.addMethod = {
@@ -72,7 +77,7 @@
 		var tipPlacement = options.tipPlacement || configTipPlacement;
 		var focusText = options.focus;
 		if (focusText) {
-			_tipPlacementRender(options.element, "validator-focus", focusText, tipPlacement)
+			_tipPlacementRender(options.element, _classNames.focus.join(''), focusText, tipPlacement)
 		};
 	};
 	var _blur = function(options) {
@@ -176,8 +181,11 @@
 				default:
 			}
 		},
-		triggerValid: function(id, type, message, tipPlacement) {
-			//todo
+		triggerValid: function(id, type) {
+			var options=total[id];
+			var $element=options.element;
+			var tipPlacement=options.tipPlacement||configTipPlacement;
+			_tipPlacementRender($element,_classNames[type],options[type],tipPlacement);
 		}
 	};
 	if (typeof exports !== 'undefined') {
