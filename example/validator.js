@@ -12,9 +12,6 @@
 		focus:""
 	};
 	var validator = function(config) {
-		return new validator.init(config);
-	};
-	validator.init = function(config) {
 		var _this = this;
 		configTipPlacement = config.tipPlacement || noop;
 		$.each(config.rules, function(key, item) {
@@ -46,7 +43,6 @@
 			};
 			//整理数据
 			$.extend(item,defaultOptions);
-			console.log(item)
 			total[key] = item;
 		});
 		rules[config.id] = config.rules;
@@ -63,7 +59,6 @@
 			return _validCore(options);
 		}
 	};
-	//$.extend(validator, validator.addMethod);
 	validator.get = function(id) {
 		return list[id] = new create(id);
 	};
@@ -74,7 +69,7 @@
 		wrong:['validator-wrong']
 	};
 	var _focus = function(options) {
-		var tipPlacement = options.tipPlacement || configTipPlacement;
+		var tipPlacement = options.tipPlacement;
 		var focusText = options.focus;
 		if (focusText) {
 			_tipPlacementRender(options.element, _classNames.focus.join(''), focusText, tipPlacement)
@@ -91,10 +86,10 @@
 		var $element = options.element;
 		var value = $.trim($element.val());
 		var limit = options.limit;
-		var wrongText = options.wrong || defaultText.wrong;
-		var emptyText = options.empty || defaultText.empty;
-		var tipPlacement = options.tipPlacement || configTipPlacement;
-		var rightText = options.right || defaultText.right;
+		var wrongText = options.wrong
+		var emptyText = options.empty
+		var tipPlacement = options.tipPlacement
+		var rightText = options.right
 		var classNames = '';
 		var validText = '';
 		if ($element.is(":hidden")) { //隐藏
@@ -184,7 +179,7 @@
 		triggerValid: function(id, type) {
 			var options=total[id];
 			var $element=options.element;
-			var tipPlacement=options.tipPlacement||configTipPlacement;
+			var tipPlacement=options.tipPlacement
 			_tipPlacementRender($element,_classNames[type],options[type],tipPlacement);
 		}
 	};
