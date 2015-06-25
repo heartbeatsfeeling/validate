@@ -4,7 +4,6 @@
 	var rules = {};
 	var list = {};
 	var total = {};
-	var configTipPlacement = null;
 	var defaultOptions={
 		empty: '不能为空',
 		wrong: "输入有错误",
@@ -13,13 +12,15 @@
 	};
 	var validator = function(config) {
 		var _this = this;
-		configTipPlacement = config.tipPlacement || noop;
 		$.each(config.rules, function(key, item) {
 			var $element = $('#' + key);
 			var limit = item.limit;
 			var limitType = $.type(limit);
-			defaultOptions.tipPlacement=item.tipPlacement||configTipPlacement;
+			item.tipPlacement=item.tipPlacement||config.tipPlacement || noop;
 			item.element = $element;
+			//整理数据
+			item=$.extend({},defaultOptions,item);
+			total[key] =item ;
 			$element.on('focus', function() {
 				_focus(item);
 			});
@@ -41,9 +42,6 @@
 					});
 					break;
 			};
-			//整理数据
-			$.extend(item,defaultOptions);
-			total[key] = item;
 		});
 		rules[config.id] = config.rules;
 	};
@@ -66,17 +64,26 @@
 		focus:['validator-focus'],
 		right:['validator-right'],
 		empty:['validator-empty'],
-		wrong:['validator-wrong']
+		wrong:['validator-wrong'],
+		input:{
+			total:'validator-input-empty validator-input-right validator-input-wrong validator-input-focus',
+			empty:"validator-input-empty",
+			right:'validator-input-right',
+			wrong:'validator-input-wrong',
+			focus:'validator-input-focus'
+		}
+	};
+	var _setInputClass=function(element,removeClass,addClass){
+		element.removeClass(removeClass).addClass(addClass)
 	};
 	var _focus = function(options) {
 		var tipPlacement = options.tipPlacement;
 		var focusText = options.focus;
+		var $element=options.element
 		if (focusText) {
-			_tipPlacementRender(options.element, _classNames.focus.join(''), focusText, tipPlacement)
+			_setInputClass($element,_classNames.input.total,_classNames.input.focus);
+			_tipPlacementRender($element, _classNames.focus.join(''), focusText, tipPlacement)
 		};
-	};
-	var _blur = function(options) {
-		return _validCore(options);
 	};
 	var _tipPlacementRender = function($element, className, text, tipPlacement) {
 		var html = "<span class='{{classname}}'>{{text}}</span>".replace("{{classname}}", className).replace("{{text}}", text)
@@ -95,6 +102,7 @@
 		if ($element.is(":hidden")) { //隐藏
 			classNames =_classNames.right.join('');
 			validText = '';
+			_setInputClass($element,_classNames.input.total,_classNames.input.right);
 			_tipPlacementRender($element, classNames, validText, tipPlacement)
 			return true;
 		};
@@ -102,11 +110,13 @@
 			if (options.required) { //必填
 				classNames =_classNames.empty.join('');
 				validText = emptyText;
+				_setInputClass($element,_classNames.input.total,_classNames.input.empty);
 				_tipPlacementRender($element, classNames, validText, tipPlacement)
 				return false;
 			} else {
 				classNames =_classNames.right.join('');
 				validText = rightText;
+				_setInputClass($element,_classNames.input.total,_classNames.input.right);
 				_tipPlacementRender($element, classNames, validText, tipPlacement)
 				return true;
 			}
@@ -115,11 +125,13 @@
 				if (!limit || $.type(limit) === 'regexp' && limit.test(value)) {
 					classNames =_classNames.right.join('');
 					validText = rightText;
-					_tipPlacementRender($element, classNames, validText, tipPlacement)
+					_setInputClass($element,_classNames.input.total,_classNames.input.right);
+					_tipPlacementRender($element, classNames, validText, tipPlacement);
 					return true;
 				} else {
 					classNames =_classNames.wrong.join('');
 					validText = wrongText;
+					_setInputClass($element,_classNames.input.total,_classNames.input.wrong);
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return false;
 				}
@@ -127,11 +139,13 @@
 				if (!limit||$.type(limit) === 'regexp' && limit.test(value)) {
 					classNames =_classNames.right.join('');
 					validText = rightText;
+					_setInputClass($element,_classNames.input.total,_classNames.input.right);
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return true;
 				} else {
 					classNames = _classNames.wrong.join('');
 					validText = wrongText;
+					_setInputClass($element,_classNames.input.total,_classNames.input.wrong);
 					_tipPlacementRender($element, classNames, validText, tipPlacement)
 					return false;
 				}
