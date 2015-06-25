@@ -8,24 +8,56 @@
 </head>
 <body>
 	<div class="common">
-		<input type="text" id='a'>
+		<input type="text" id='a' name='a'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="text" id='b' value=''>
+		<input type="text" id='b' value=''  name='b'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="text" id='c' value=''>
+		<input type="text" id='c' value='' name='c'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
 		<textarea id='d'></textarea>
 		<div class="tip"></div>
 	</div>
+	<div class="common">
+		<select name="" id="e">
+			<option value="0">000</option>
+			<option value="1">11</option>
+			<option value="2">22</option>
+			<option value="3">33</option>
+			<option value="4">44</option>
+			<option value="5">55</option>
+		</select>
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<input type="checkbox" name="f" id="">
+		<input type="checkbox" name="f" id="">
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<input type="radio" name="g" id="">
+		<input type="radio" name="g" id="">
+		<div class="tip"></div>
+	</div>
 	<script>
 		validator.addMethod.isString=function(options){
-			var reg=/^[a-z||A-Z]+$/;
+			var $element=options.element;
+			var value=$element.val();
+			if(!value){
+				options.tipPlacement($element,options.empty);
+				return false;
+			}else if(value.length>2&&value.length<5){
+				options.tipPlacement($element,options.right);
+				return true;
+			}else{
+				options.tipPlacement($element,options.wrong);
+				return false;
+			};
 		};
 		validator({
 			id:"na",
@@ -42,10 +74,11 @@
 					limit:/^[\u4e00-\u9fa5]+$/
 				},
 				'b':{
-					wrong:"输入的错误b",
+					wrong:"请输入2到5位",
 					right:"",
-					empty:'为空b',
-					focus:"请您输入b"
+					empty:'输入不能为空',
+					focus:"请您输入B啊",
+					limit:'isString'
 				},
 				'c':{
 					wrong:"输入的错误c",
