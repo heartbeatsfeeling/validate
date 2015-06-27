@@ -12,36 +12,25 @@
 	var validator = function(config) {
 		var _this = this;
 		$.each(config.rules, function(key, item) {
-			var $element = $('#' + key);
-			//var $element = $("[name='"+key+"']");
+			var $element = $("[name='" + key + "']");
 			var limit = item.limit;
 			var limitType = $.type(limit);
-			var nodeName = $element.prop('nodeName').toLowerCase();
-			var elementType = $element.prop('type');
-			var eventType = 'blur';
+			var eventType = _getElementType($element);
 			item.tipPlacement = item.tipPlacement || config.tipPlacement || noop;
 			item.element = $element;
-			console.log(nodeName, elementType)
-			if (elementType == 'select') {
-				eventType = 'change'
-			} else {
-				if (elementType == 'checkbox' || elementType == 'radio') {
-					eventType = 'click';
-				} else {
-					eventType = 'blur';
-				};
-			};
 			//整理数据
 			item = $.extend({}, defaultOptions, item);
 			total[key] = item;
-			$element.on('focus', function() {
-				_focus(item);
-			});
+			if(eventType!=='click'){
+				$element.on('focus', function() {
+					_focus(item);
+				});
+			};
 			switch (limitType) {
 				case 'regexp':
 				case 'undefined':
 					$element.on(eventType, function() {
-						_validCore(item);
+						_events[eventType](item);
 					});
 					break;
 				case 'string':
@@ -49,6 +38,8 @@
 						var fn = validator.addMethod[limit];
 						if ($.type(fn) === 'function') {
 							fn(item);
+						} else if ($.type(_events[eventType]) == 'function') {
+							_events[eventType](item);
 						} else {
 							throw limit + ' is not function'
 						};
@@ -65,12 +56,14 @@
 		number: function(options) {
 			var reg = /^\d+$/;
 			options.limit = reg;
-			return _validCore(options);
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
 		},
 		email: function(options) {
 			var reg = /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i;
 			options.limit = reg;
-			return _validCore(options);
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
 		}
 	};
 	validator.get = function(id) {
@@ -89,6 +82,23 @@
 			focus: 'validator-input-focus'
 		}
 	};
+	var _getElementType = function(element) { //得到事件类型
+		var $element = element;
+		var nodeName = $element.prop('nodeName').toLowerCase();
+		var elementType = $element.prop('type');
+		var eventType = 'blur';
+		if (nodeName == 'select') {
+			eventType = 'blur';
+			//eventType = 'change'; tab的时候focus会有问题
+		} else {
+			if (elementType == 'checkbox' || elementType == 'radio') {
+				eventType = 'click';
+			} else {
+				eventType = 'blur';
+			};
+		};
+		return eventType
+	};
 	var _setInputClass = function(element, removeClass, addClass) {
 		element.removeClass(removeClass).addClass(addClass)
 	};
@@ -106,7 +116,7 @@
 		tipPlacement($element, html);
 	};
 	var _events = {
-		validCore: function(options) { //核心验证方法
+		blur: function(options) { //核心验证方法
 			var $element = options.element;
 			var value = $.trim($element.val());
 			var limit = options.limit;
@@ -168,9 +178,34 @@
 					}
 				}
 			};
-		};
+		},
+		change: function(options) {
+			return _events.blur(options);
+		},
+		click: function(options) {
+			var $element = options.element;
+			var limit = options.limit;
+			var wrongText = options.wrong;
+			var emptyText = options.empty;
+			var rightText = options.right;
+			var tipPlacement = options.tipPlacement
+			var classNames = '';
+			var validText = '';
+			if ($element.filter(":checked").length >= limit) {
+				classNames = _classNames.right.join('');
+				validText = rightText;
+				_setInputClass($element, _classNames.input.total, _classNames.input.right);
+				_tipPlacementRender($element, classNames, validText, tipPlacement)
+				return true;
+			} else {
+				classNames = _classNames.wrong.join('');
+				validText = wrongText;
+				_setInputClass($element, _classNames.input.total, _classNames.input.wrong);
+				_tipPlacementRender($element, classNames, validText, tipPlacement)
+				return false;
+			}
+		}
 	}
-
 	var noop = function() {};
 	var create = function(id) {
 		this.element = rules[id];
@@ -193,16 +228,19 @@
 			var limit = options.limit;
 			var limitType = $.type(limit);
 			var fn = noop;
+			var eventType = _getElementType(options.element);
 			switch (limitType) {
 				case 'regexp':
 				case 'undefined':
-					return _validCore(options)
+					return _events[eventType](options)
 					break;
 				case 'string':
 					fn = validator.addMethod[limit];
 					if ($.type(fn) === 'function') {
 						return fn(options)
-					} else {
+					} else if($.type(_events[eventType]) == 'function'){
+						return _events[eventType](options)
+					}else {
 						return false;
 					}
 					break;

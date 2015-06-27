@@ -8,23 +8,19 @@
 </head>
 <body>
 	<div class="common">
-		<input type="text" id='a' name='a'>
+		<input type="text" name='a'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="text" id='b' value=''  name='b'>
+		<input type="text" name='b'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="text" id='c' value='' name='c'>
+		<input type="text" name='c'>
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<textarea id='d'></textarea>
-		<div class="tip"></div>
-	</div>
-	<div class="common">
-		<select name="" id="e">
+		<select name="d" >
 			<option value="0">000</option>
 			<option value="1">11</option>
 			<option value="2">22</option>
@@ -35,13 +31,13 @@
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="checkbox" name="f" id="">
-		<input type="checkbox" name="f" id="">
+		<input type="checkbox" name="e" id="">
+		<input type="checkbox" name="e" id="">
 		<div class="tip"></div>
 	</div>
 	<div class="common">
-		<input type="radio" name="g" id="">
-		<input type="radio" name="g" id="">
+		<input type="radio" name="f" id="">
+		<input type="radio" name="f" id="">
 		<div class="tip"></div>
 	</div>
 	<script>
@@ -74,9 +70,9 @@
 					limit:/^[\u4e00-\u9fa5]+$/
 				},
 				'b':{
-					wrong:"请输入2到5位",
+					wrong:"请输入2到5位b",
 					right:"",
-					empty:'输入不能为空',
+					empty:'输入不能为空b',
 					focus:"请您输入B啊",
 					limit:'isString'
 				},
@@ -87,6 +83,27 @@
 					focus:"请您输入c",
 					required:true,
 					limit:"number"
+				},
+				'd':{
+					wrong:"输入的错误d",
+					right:"正确d",
+					empty:'为空d',
+					focus:"请您输入d",
+					limit:/[^0]/
+				},
+				'e':{
+					wrong:"输入的错误e",
+					right:"正确e",
+					empty:'为空e',
+					focus:"请您输入e",
+					limit:"1"
+				},
+				'f':{
+					wrong:"输入的错误f",
+					right:"正确f",
+					empty:'为空f',
+					focus:"请您输入f",
+					limit:"1"
 				}
 			}
 		});
