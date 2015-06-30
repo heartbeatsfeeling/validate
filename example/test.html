@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title></title>
 	<script type="text/javascript" src='jquery-1.11.1.js'></script>
-	<script type="text/javascript" src="validator.js"></script>
+	<script type="text/javascript" src="validate.js"></script>
 </head>
 <body>
 	<div class="common">
@@ -41,7 +41,7 @@
 		<div class="tip"></div>
 	</div>
 	<script>
-		validator.addMethod.isString=function(options){
+		validate.addMethod.isString=function(options){
 			var $element=options.element;
 			var value=$element.val();
 			if(!value){
@@ -55,7 +55,7 @@
 				return false;
 			};
 		};
-		validator({
+		validate({
 			id:"na",
 			tipPlacement:function(element,tip){
 				element.closest('.common').find('.tip').html(tip);

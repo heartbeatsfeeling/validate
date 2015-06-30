@@ -9,7 +9,7 @@
 		right: "",
 		focus: ""
 	};
-	var validator = function(config) {
+	var validate = function(config) {
 		var _this = this;
 		$.each(config.rules, function(key, item) {
 			var $element = $("[name='" + key + "']");
@@ -35,7 +35,7 @@
 					break;
 				case 'string':
 					$element.on(eventType, function() {
-						var fn = validator.addMethod[limit];
+						var fn = validate.addMethod[limit];
 						if ($.type(fn) === 'function') {
 							fn(item);
 						} else if ($.type(_events[eventType]) == 'function') {
@@ -49,7 +49,7 @@
 		});
 		rules[config.id] = config.rules;
 	};
-	validator.addMethod = {
+	validate.addMethod = {
 		empty: function() {
 
 		},
@@ -66,20 +66,20 @@
 			return _events[eventType](options);
 		}
 	};
-	validator.get = function(id) {
+	validate.get = function(id) {
 		return list[id] = new create(id);
 	};
 	var _classNames = {
-		focus: ['validator-focus'],
-		right: ['validator-right'],
-		empty: ['validator-empty'],
-		wrong: ['validator-wrong'],
+		focus: ['validate-focus'],
+		right: ['validate-right'],
+		empty: ['validate-empty'],
+		wrong: ['validate-wrong'],
 		input: {
-			total: 'validator-input-empty validator-input-right validator-input-wrong validator-input-focus',
-			empty: "validator-input-empty",
-			right: 'validator-input-right',
-			wrong: 'validator-input-wrong',
-			focus: 'validator-input-focus'
+			total: 'validate-input-empty validate-input-right validate-input-wrong validate-input-focus',
+			empty: "validate-input-empty",
+			right: 'validate-input-right',
+			wrong: 'validate-input-wrong',
+			focus: 'validate-input-focus'
 		}
 	};
 	var _getElementType = function(element) { //得到事件类型
@@ -235,7 +235,7 @@
 					return _events[eventType](options)
 					break;
 				case 'string':
-					fn = validator.addMethod[limit];
+					fn = validate.addMethod[limit];
 					if ($.type(fn) === 'function') {
 						return fn(options)
 					} else if($.type(_events[eventType]) == 'function'){
@@ -255,8 +255,8 @@
 		}
 	};
 	if (typeof exports !== 'undefined') {
-		module.exports = validator
+		module.exports = validate
 	} else {
-		window['validator'] = validator;
+		window['validate'] = validate;
 	};
 })(jQuery);
