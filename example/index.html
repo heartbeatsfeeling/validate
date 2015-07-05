@@ -1,0 +1,169 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title></title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<script type="text/javascript" src='jquery-1.11.1.js'></script>
+	<script src="bootstrap.min.js"></script>
+	<script type="text/javascript" src="validate.js"></script>
+	<style>
+		fieldset{border:1px solid #cecece;padding:10px;}
+		.tip{margin-left:10px;display:inline-block;vertical-align: middle;}
+		.js{line-height: 24px;}
+		.p4{text-indent:2em;}
+		.p8{text-indent:4em;}
+		.p16{text-indent:8em;}
+		.note{position:relative;padding-left:16px;color:#cecece;vertical-align: middle;text-indent: 0;}
+		.note:before{position: absolute;width:3px;height:22px;left:0;top:-2px;content: '//'}
+		.validate-empty,
+		.validate-wrong{color:#f00;}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1 class='text-center'>jQuery.validate使用方法</h1>
+		<div class="desc">
+			<h3>自带验证规则：</h3>
+			<ol>
+				<li>
+					<h4 class='tit'>number 验证全数字</h4>
+				</li>
+				<li>
+					<h4 class='tit'>email  验证电子邮箱</h4>
+				</li>
+				<li>
+					<h4 class='tit'>empty  验证非空</h4>
+				</li>
+			</ol>
+		</div>
+		<div class="cont">
+			<h3>使用方法：</h3>
+			<fieldset class='form-inline'>
+				<h4>效果：</h4>
+				<div class="form-group common">
+					<label for="a">中文验证：</label>
+					<input type="text" name='a' class='form-control'>
+					<div class="tip"></div>
+				</div>
+				<h4>代码：</h4>
+				<code>
+					<div>validate({ <span class="note">调用验证</span></div>
+						<div class="p4">id:"na", <span class="note">验证器名称,方便以后调用</span></div>
+						<div class="p4">tipPlacement:function(element,tip){ <span class="note">提示信息放置函数</span></div>
+						<div class="p8">element.closest('.common').find('.tip').html(tip);<span class="note">将提示信息放在哪里，element为input节点，tip为提示内容</span></div>
+						<div class="p4">},</div>
+						<div class="p4">rules:{</div>
+							<div class="p8">'a':{ <span class="note">name为a的需要验证的节点 </span></div>
+								<div class="p16">wrong:"请输入中文", <span class="note">wrong,right,empty,focus这几个字段为提示内容</span></div>
+								<div class="p16">right:"输入正确",</div>
+								<div class="p16">empty:'输入不能为空',</div>
+								<div class="p16">focus:"请您输入该字段",</div>
+								<div class="p16">required:true, <span class="note">是否为必填</span></div>
+								<div class="p16">limit:/^[\u4e00-\u9fa5]+$/ <span class="note">验证正则</span></div>
+							<div class="p8">}</div>
+						}
+					<div>});</div>
+				</code>
+			</fieldset>
+		</div>
+	</div>
+	<div class="common">
+		<input type="text" name='b'>
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<input type="text" name='c'>
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<select name="d" >
+			<option value="0">000</option>
+			<option value="1">11</option>
+			<option value="2">22</option>
+			<option value="3">33</option>
+			<option value="4">44</option>
+			<option value="5">55</option>
+		</select>
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<input type="checkbox" name="e" id="">
+		<input type="checkbox" name="e" id="">
+		<div class="tip"></div>
+	</div>
+	<div class="common">
+		<input type="radio" name="f" id="">
+		<input type="radio" name="f" id="">
+		<div class="tip"></div>
+	</div>
+	<script>
+		validate.addMethod.isString=function(options){
+			var $element=options.element;
+			var value=$element.val();
+			if(!value){
+				options.tipPlacement($element,options.empty);
+				return false;
+			}else if(value.length>2&&value.length<5){
+				options.tipPlacement($element,options.right);
+				return true;
+			}else{
+				options.tipPlacement($element,options.wrong);
+				return false;
+			};
+		};
+		validate({
+			id:"na",
+			tipPlacement:function(element,tip){
+				element.closest('.common').find('.tip').html(tip);
+			},
+			rules:{
+				'a':{
+					wrong:"请输入中文",
+					right:"输入正确",
+					empty:'输入不能为空',
+					focus:"请您输入该字段",
+					required:true,
+					limit:/^[\u4e00-\u9fa5]+$/
+				},
+				'b':{
+					wrong:"请输入2到5位b",
+					right:"",
+					empty:'输入不能为空b',
+					focus:"请您输入B啊",
+					limit:'isString'
+				},
+				'c':{
+					wrong:"输入的错误c",
+					right:"正确c",
+					empty:'为空c',
+					focus:"请您输入c",
+					required:true,
+					limit:"number"
+				},
+				'd':{
+					wrong:"输入的错误d",
+					right:"正确d",
+					empty:'为空d',
+					focus:"请您输入d",
+					limit:/[^0]/
+				},
+				'e':{
+					wrong:"输入的错误e",
+					right:"正确e",
+					empty:'为空e',
+					focus:"请您输入e",
+					limit:"1"
+				},
+				'f':{
+					wrong:"输入的错误f",
+					right:"正确f",
+					empty:'为空f',
+					focus:"请您输入f",
+					limit:"1"
+				}
+			}
+		});
+	</script>
+</body>
+</html>
