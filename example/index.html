@@ -18,6 +18,15 @@
 		.note:before{position: absolute;width:3px;height:22px;left:0;top:-2px;content: '//'}
 		.validate-empty,
 		.validate-wrong{color:#f00;}
+		strong{font-weight: 700;color:blue;}
+		button{width:62px;border:0 none;text-align: center;color:#fff;font-size:14px;padding:3px 0;cursor:pointer;background: #DF3F3F;
+		background: -webkit-linear-gradient(#F05457, #CF3535);
+		background: -o-linear-gradient(#F05457, #CF3535);
+		background: linear-gradient(#F05457, #CF3535);
+		border-radius: 3px;
+		}
+		.common{display: block !important;margin-bottom: 10px !important;}
+		code span{color:#000;}
 	</style>
 </head>
 <body>
@@ -27,13 +36,13 @@
 			<h3>自带验证规则：</h3>
 			<ol>
 				<li>
-					<h4 class='tit'>number 验证全数字</h4>
+					<h4 class='tit'>number 验证纯数字</h4>
 				</li>
 				<li>
 					<h4 class='tit'>email  验证电子邮箱</h4>
 				</li>
 				<li>
-					<h4 class='tit'>empty  验证非空</h4>
+					<h4 class='tit'>string  纯字母</h4>
 				</li>
 				<li>
 					<h4 class='tit'>phone  验证手机号码</h4>
@@ -43,13 +52,20 @@
 		<div class="cont">
 			<h3>使用方法：</h3>
 			<fieldset class='form-inline'>
-				<h4>效果：</h4>
-				<div class="form-group common">
-					<label for="a">中文验证：</label>
-					<input type="text" name='a' class='form-control'>
-					<div class="tip"></div>
-				</div>
-				<h4>代码：</h4>
+				<h4>HTML代码</h4>
+				<code>
+					<div class="p4">&lt;div class="form-group common"&gt;</div>
+					<div class="p8">&lt;label>中文验证：&lt;/label&gt;</div>
+					<div class="p8">&lt;input type="text" name=<strong>'a'</strong> class='form-control' &gt;</div>
+					<div class="p8">&lt;div class="tip"&gt;&lt;/div&gt;</div>
+					<div class="p4">&lt;/div&gt;</div>
+					<div class="p4">&lt;div class="form-group common"&gt;</div>
+					<div class="p8">&lt;label>中文纯数字：&lt;/label&gt;</div>
+					<div class="p8">&lt;input type="text" name=<strong>'b'</strong> class='form-control' &gt;</div>
+					<div class="p8">&lt;div class="tip"&gt;&lt;/div&gt;</div>
+					<div class="p4">&lt;/div&gt;</div>
+				</code>
+				<h4>JS代码：</h4>
 				<code>
 					<div>validate({ <span class="note">调用验证</span></div>
 						<div class="p4">id:"na", <span class="note">验证器名称,方便以后调用</span></div>
@@ -57,21 +73,56 @@
 						<div class="p8">element.closest('.common').find('.tip').html(tip);<span class="note">将提示信息放在哪里，element为input节点，tip为提示内容</span></div>
 						<div class="p4">},</div>
 						<div class="p4">rules:{</div>
-							<div class="p8">'a':{ <span class="note">name为a的需要验证的节点 </span></div>
+							<div class="p8"><strong>'a'</strong>:{ <span class="note">name为a的需要验证的节点 </span></div>
 								<div class="p16">wrong:"请输入中文", <span class="note">wrong,right,empty,focus这几个字段为提示内容</span></div>
 								<div class="p16">right:"输入正确",</div>
 								<div class="p16">empty:'输入不能为空',</div>
 								<div class="p16">focus:"请您输入该字段",</div>
-								<div class="p16">required:true, <span class="note">是否为必填</span></div>
+								<div class="p16">required:true, <span class="note">是否为必填(填了就得写对！)</span></div>
 								<div class="p16">limit:/^[\u4e00-\u9fa5]+$/ <span class="note">验证正则</span></div>
 							<div class="p8">}</div>
-						}
+							<div class="p8"><strong>'b'</strong>:{ <span class="note">name为a的需要验证的节点 </span></div>
+								<div class="p16">wrong:"请输入数字", <span class="note">wrong,right,empty,focus这几个字段为提示内容</span></div>
+								<div class="p16">right:"",</div>
+								<div class="p16">empty:'输入项不能为空',</div>
+								<div class="p16">focus:"请你输入该项",</div>
+								<div class="p16">required:true, <span class="note">是否为必填</span></div>
+								<div class="p16">limit:'number' <span class="note">插件自带验证函数</span></div>
+							<div class="p8">}</div>
+						<div class="p4">}</div>
 					<div>});</div>
 				</code>
+				<h4>效果：</h4>
+				<div class="form-group common">
+					<label>&emsp;中文验证：</label>
+					<input type="text" name='a' class='form-control'>
+					<div class="tip"></div>
+				</div>
+				<div class="form-group common">
+					<label>中文纯数字：</label>
+					<input type="text" name='b' class='form-control'>
+					<div class="tip"></div>
+				</div>
+				<h4>运行结果</h4>
+				<button id='na'>运行</button>
+				<div>
+					<h4>运行代码：</h4>
+					<code>
+						<p>
+							<span>验证结果：</span>
+							validate.get('na').valid();
+						</p>
+						<p>
+							<span>也可以单纯验证其中的一个：</span><br >
+							validate.get('na').valid(<strong>'a'</strong>)<br >
+							validate.get('na').valid(<strong>'b'</strong>)
+						</p>
+					</code>
+				</div>
 			</fieldset>
 		</div>
 	</div>
-	<div class="common">
+	<!-- <div class="common">
 		<input type="text" name='b'>
 		<div class="tip"></div>
 	</div>
@@ -99,7 +150,7 @@
 		<input type="radio" name="f" id="">
 		<input type="radio" name="f" id="">
 		<div class="tip"></div>
-	</div>
+	</div> -->
 	<script>
 		validate.addMethod.isString=function(options){
 			var $element=options.element;
@@ -130,42 +181,19 @@
 					limit:/^[\u4e00-\u9fa5]+$/
 				},
 				'b':{
-					wrong:"请输入2到5位b",
+					wrong:"请输入数字",
 					right:"",
-					empty:'输入不能为空b',
-					focus:"请您输入B啊",
-					limit:'isString'
-				},
-				'c':{
-					wrong:"输入的错误c",
-					right:"正确c",
-					empty:'为空c',
-					focus:"请您输入c",
+					empty:'输入项不能为空',
+					focus:"请你输入该项",
 					required:true,
-					limit:"number"
-				},
-				'd':{
-					wrong:"输入的错误d",
-					right:"正确d",
-					empty:'为空d',
-					focus:"请您输入d",
-					limit:/[^0]/
-				},
-				'e':{
-					wrong:"输入的错误e",
-					right:"正确e",
-					empty:'为空e',
-					focus:"请您输入e",
-					limit:"1"
-				},
-				'f':{
-					wrong:"输入的错误f",
-					right:"正确f",
-					empty:'为空f',
-					focus:"请您输入f",
-					limit:"1"
+					limit:'number'
 				}
 			}
+		});
+		$('button').bind('click',function(){
+			var $this=$(this);
+			var id=$this.prop('id');
+			$this.text( validate.get(id).valid() );
 		});
 	</script>
 </body>

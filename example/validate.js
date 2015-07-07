@@ -50,25 +50,25 @@
 		rules[config.id] = config.rules;
 	};
 	validate.addMethod = {
-		phone:function(options){
+		phone:function(options){//手机号码
 			var reg = /^\d{11}$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		empty: function() {
-			var reg = /[^\s]{1,}/;
+		string:function(options){//字符串
+			var reg = /^[A-Za-z]+$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		number: function(options) {
+		number: function(options) {//纯数字
 			var reg = /^\d+$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		email: function(options) {
+		email: function(options) {//电子邮件
 			var reg = /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
@@ -98,7 +98,6 @@
 		var eventType = 'blur';
 		if (nodeName == 'select') {
 			eventType = 'blur';
-			//eventType = 'change'; tab的时候focus会有问题
 		} else {
 			if (elementType == 'checkbox' || elementType == 'radio') {
 				eventType = 'click';
@@ -190,6 +189,9 @@
 		},
 		change: function(options) {
 			return _events.blur(options);
+		},
+		length:function(){
+
 		},
 		click: function(options) {
 			var $element = options.element;
