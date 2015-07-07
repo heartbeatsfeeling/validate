@@ -50,8 +50,17 @@
 		rules[config.id] = config.rules;
 	};
 	validate.addMethod = {
+		phone:function(options){
+			var reg = /^\d{11}$/;
+			options.limit = reg;
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
+		},
 		empty: function() {
-
+			var reg = /[^\s]{1,}/;
+			options.limit = reg;
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
 		},
 		number: function(options) {
 			var reg = /^\d+$/;
