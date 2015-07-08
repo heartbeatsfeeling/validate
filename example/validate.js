@@ -134,6 +134,13 @@
 			var tipPlacement = options.tipPlacement
 			var classNames = '';
 			var validText = '';
+			var length=options.length?options.length.split('~'):'';
+			var minLength=0;
+			var maxLength=Infinity;
+			if(length){
+				minLength=length[0];
+				maxLength=length[1]?length[1]:Infinity;
+			};
 			if ($element.is(":hidden")) { //隐藏
 				classNames = _classNames.right.join('');
 				validText = '';
@@ -157,7 +164,7 @@
 				}
 			} else {
 				if (options.required) {
-					if (!limit || $.type(limit) === 'regexp' && limit.test(value)) {
+					if (!limit || $.type(limit) === 'regexp' && limit.test(value)&&(value.length>=minLength&&value.length<=maxLength) ) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
 						_setInputClass($element, _classNames.input.total, _classNames.input.right);
@@ -171,7 +178,7 @@
 						return false;
 					}
 				} else {
-					if (!limit || $.type(limit) === 'regexp' && limit.test(value)) {
+					if (!limit || $.type(limit) === 'regexp' && limit.test(value) &&(value.length>=minLength&&value.length<=maxLength) ) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
 						_setInputClass($element, _classNames.input.total, _classNames.input.right);
@@ -189,9 +196,6 @@
 		},
 		change: function(options) {
 			return _events.blur(options);
-		},
-		length:function(){
-
 		},
 		click: function(options) {
 			var $element = options.element;
