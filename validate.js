@@ -50,16 +50,25 @@
 		rules[config.id] = config.rules;
 	};
 	validate.addMethod = {
-		empty: function() {
-
+		phone:function(options){//手机号码
+			var reg = /^\d{11}$/;
+			options.limit = reg;
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
 		},
-		number: function(options) {
+		string:function(options){//字符串
+			var reg = /^[A-Za-z]+$/;
+			options.limit = reg;
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
+		},
+		number: function(options) {//纯数字
 			var reg = /^\d+$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		email: function(options) {
+		email: function(options) {//电子邮件
 			var reg = /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
@@ -89,7 +98,6 @@
 		var eventType = 'blur';
 		if (nodeName == 'select') {
 			eventType = 'blur';
-			//eventType = 'change'; tab的时候focus会有问题
 		} else {
 			if (elementType == 'checkbox' || elementType == 'radio') {
 				eventType = 'click';
@@ -126,6 +134,13 @@
 			var tipPlacement = options.tipPlacement
 			var classNames = '';
 			var validText = '';
+			var length=options.length?options.length.split('~'):'';
+			var minLength=0;
+			var maxLength=Infinity;
+			if(length){
+				minLength=length[0];
+				maxLength=length[1]?length[1]:Infinity;
+			};
 			if ($element.is(":hidden")) { //隐藏
 				classNames = _classNames.right.join('');
 				validText = '';
@@ -149,7 +164,7 @@
 				}
 			} else {
 				if (options.required) {
-					if (!limit || $.type(limit) === 'regexp' && limit.test(value)) {
+					if (!limit || $.type(limit) === 'regexp' && limit.test(value)&&(value.length>=minLength&&value.length<=maxLength) ) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
 						_setInputClass($element, _classNames.input.total, _classNames.input.right);
@@ -163,7 +178,7 @@
 						return false;
 					}
 				} else {
-					if (!limit || $.type(limit) === 'regexp' && limit.test(value)) {
+					if (!limit || $.type(limit) === 'regexp' && limit.test(value) &&(value.length>=minLength&&value.length<=maxLength) ) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
 						_setInputClass($element, _classNames.input.total, _classNames.input.right);
