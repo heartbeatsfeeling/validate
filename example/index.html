@@ -249,7 +249,7 @@
 			if(!value){
 				options.tipPlacement($element,options.empty);
 				return false;
-			}else if(!isNaN(Date.parse(value))){
+			}else if(!isNaN(Date.parse(value)) &&Date.parse(value)>0 ){
 				options.tipPlacement($element,options.right);
 				return true;
 			}else{
