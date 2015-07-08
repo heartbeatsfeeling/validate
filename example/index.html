@@ -8,7 +8,7 @@
 	<script src="bootstrap.min.js"></script>
 	<script type="text/javascript" src="validate.js"></script>
 	<style>
-		fieldset{border:1px solid #cecece;padding:10px;}
+		fieldset{border:1px solid #cecece;padding:10px;margin-bottom:10px;}
 		.tip{margin-left:10px;display:inline-block;vertical-align: middle;}
 		.js{line-height: 24px;}
 		.p4{text-indent:2em;}
@@ -27,6 +27,7 @@
 		}
 		.common{display: block !important;margin-bottom: 10px !important;}
 		code span{color:#000;}
+		label{width:100px;text-align: right;}
 	</style>
 </head>
 <body>
@@ -52,6 +53,7 @@
 		<div class="cont">
 			<h3>使用方法：</h3>
 			<fieldset class='form-inline'>
+				<h3>基本输入框</h3>
 				<h4>HTML代码</h4>
 				<code>
 					<div class="p4">&lt;div class="form-group common"&gt;</div>
@@ -82,11 +84,12 @@
 								<div class="p16">limit:/^[\u4e00-\u9fa5]+$/ <span class="note">验证正则</span></div>
 							<div class="p8">}</div>
 							<div class="p8"><strong>'b'</strong>:{ <span class="note">name为a的需要验证的节点 </span></div>
-								<div class="p16">wrong:"请输入数字", <span class="note">wrong,right,empty,focus这几个字段为提示内容</span></div>
+								<div class="p16">wrong:"请输入2-5位数字", <span class="note">wrong,right,empty,focus这几个字段为提示内容</span></div>
 								<div class="p16">right:"",</div>
 								<div class="p16">empty:'输入项不能为空',</div>
 								<div class="p16">focus:"请你输入该项",</div>
 								<div class="p16">required:true, <span class="note">是否为必填</span></div>
+								<div class="p16">length:'2~5', <span class="note">长度：x~y或x~</span></div>
 								<div class="p16">limit:'number' <span class="note">插件自带验证函数</span></div>
 							<div class="p8">}</div>
 						<div class="p4">}</div>
@@ -120,51 +123,139 @@
 					</code>
 				</div>
 			</fieldset>
+			<fieldset class='form-inline'>
+				<h3>选择框</h3>
+				<h4>HTML代码</h4>
+				<code>
+					和上面的结构一样
+				</code>
+				<h4>JS代码：</h4>
+				<code>
+					<div>validate({ <span class="note">调用验证</span></div>
+						<div class="p4">id:"na", <span class="note">验证器名称,方便以后调用</span></div>
+						<div class="p4">tipPlacement:function(element,tip){ <span class="note">提示信息放置函数</span></div>
+						<div class="p8">element.closest('.common').find('.tip').html(tip);<span class="note">将提示信息放在哪里，element为input节点，tip为提示内容</span></div>
+						<div class="p4">},</div>
+						<div class="p4">rules:{</div>
+							<div class="p8"><strong>'c'</strong>:{ </div>
+								<div class="p16">wrong:"您没有选择", </div>
+								<div class="p16">right:"",</div>
+								<div class="p16">empty:'您没有选择',</div>
+								<div class="p16">focus:"请选择",</div>
+								<div class="p16">required:true, </div>
+								<div class="p16">limit:/[^0]/ <span class="note">选择项的值不是0</span></div>
+							<div class="p8">}</div>
+							<div class="p8"><strong>'d'</strong>:{ </div>
+								<div class="p16">wrong:"请选择checkbox", </div>
+								<div class="p16">right:"",</div>
+								<div class="p16">empty:'请选择checkbox',</div>
+								<div class="p16">focus:"请选择checkbox",</div>
+								<div class="p16">required:true, </div>
+								<div class="p16">limit:'1' <span class="note">选择的个数</span> </div>
+							<div class="p8">}</div>
+							<div class="p8"><strong>'e'</strong>:{</div>
+								<div class="p16">wrong:"请选择radio", </div>
+								<div class="p16">right:"",</div>
+								<div class="p16">empty:'请选择radio',</div>
+								<div class="p16">focus:"请选择radio",</div>
+								<div class="p16">required:true, </div>
+								<div class="p16">limit:'1' <span class="note">选择的个数</span> </div>
+							<div class="p8">}</div>
+						<div class="p4">}</div>
+					<div>});</div>
+				</code>
+				<h4>效果：</h4>
+				<div class="form-group common">
+					<label>select：</label>
+					<select name="c" id="">
+						<option value="0">请选择</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					</select>
+					<div class="tip"></div>
+				</div>
+				<div class="form-group common">
+					<label>checkbox：</label>
+					<input type="checkbox" name="d" id="">
+					<input type="checkbox" name="d" id="">
+					<input type="checkbox" name="d" id="">
+					<div class="tip"></div>
+				</div>
+				<div class="form-group common">
+					<label>radio：</label>
+					<input type="radio" name="e" id="">
+					<input type="radio" name="e" id="">
+					<input type="radio" name="e" id="">
+					<div class="tip"></div>
+				</div>
+				<h4>运行结果</h4>
+				<button id='nb'>运行</button>
+			</fieldset>
+			<fieldset class='form-inline'>
+				<h3>自定义验证</h3>
+				<h4>HTML代码</h4>
+				<code>
+					和上面的结构一样
+				</code>
+				<h4>JS代码：</h4>
+				<code>
+					<div class="">validate.addMethod.<strong>isDate</strong>=function(options){//日期验证</div>
+					<div class="p8">var $element=options.element;</div>
+					<div class="p8">var value=$element.val();</div>
+					<div class="p8">if(!value){</div>
+					<div class="p16">options.tipPlacement($element,options.empty);</div>
+					<div class="p16">return false;</div>
+					<div class="p8">}else if(!isNaN(Date.parse(value))){</div>
+					<div class="p16">options.tipPlacement($element,options.right);</div>
+					<div class="p16">return true;</div>
+					<div class="p8">}else{</div>
+					<div class="p16">options.tipPlacement($element,options.wrong);</div>
+					<div class="p16">return false;</div>
+					<div class="p8">}</div>
+					<div class="">};</div>
+					<div>validate({ <span class="note">调用验证</span></div>
+						<div class="p4">id:"nc", <span class="note">验证器名称,方便以后调用</span></div>
+						<div class="p4">tipPlacement:function(element,tip){ <span class="note">提示信息放置函数</span></div>
+						<div class="p8">element.closest('.common').find('.tip').html(tip);<span class="note">将提示信息放在哪里，element为input节点，tip为提示内容</span></div>
+						<div class="p4">},</div>
+						<div class="p4">rules:{</div>
+							<div class="p8"><strong>'f'</strong>:{ </div>
+								<div class="p16">wrong:"您没有选择", </div>
+								<div class="p16">right:"",</div>
+								<div class="p16">empty:'您没有选择',</div>
+								<div class="p16">focus:"请选择",</div>
+								<div class="p16">required:true, </div>
+								<div class="p16">limit: <strong>'isDate'</strong> <span class="note">自定义方法</span></div>
+							<div class="p8">}</div>
+						<div class="p4">}</div>
+					<div>});</div>
+				</code>
+				<h4>效果：</h4>
+				<div class="form-group common">
+					<label>自定义：</label>
+					<input type="text" name="f" id="" class='form-control '>
+					<div class="tip"></div>
+				</div>
+				<h4>运行结果</h4>
+				<button id='nc'>运行</button>
+			</fieldset>
 		</div>
 	</div>
-	<!-- <div class="common">
-		<input type="text" name='b'>
-		<div class="tip"></div>
-	</div>
-	<div class="common">
-		<input type="text" name='c'>
-		<div class="tip"></div>
-	</div>
-	<div class="common">
-		<select name="d" >
-			<option value="0">000</option>
-			<option value="1">11</option>
-			<option value="2">22</option>
-			<option value="3">33</option>
-			<option value="4">44</option>
-			<option value="5">55</option>
-		</select>
-		<div class="tip"></div>
-	</div>
-	<div class="common">
-		<input type="checkbox" name="e" id="">
-		<input type="checkbox" name="e" id="">
-		<div class="tip"></div>
-	</div>
-	<div class="common">
-		<input type="radio" name="f" id="">
-		<input type="radio" name="f" id="">
-		<div class="tip"></div>
-	</div> -->
 	<script>
-		validate.addMethod.isString=function(options){
+		validate.addMethod.isDate=function(options){//日期验证
 			var $element=options.element;
 			var value=$element.val();
 			if(!value){
 				options.tipPlacement($element,options.empty);
 				return false;
-			}else if(value.length>2&&value.length<5){
+			}else if(!isNaN(Date.parse(value))){
 				options.tipPlacement($element,options.right);
 				return true;
 			}else{
 				options.tipPlacement($element,options.wrong);
 				return false;
-			};
+			}
 		};
 		validate({
 			id:"na",
@@ -181,12 +272,61 @@
 					limit:/^[\u4e00-\u9fa5]+$/
 				},
 				'b':{
-					wrong:"请输入数字",
+					wrong:"请输入2-5位数字",
 					right:"",
 					empty:'输入项不能为空',
 					focus:"请你输入该项",
 					required:true,
+					length:"2~5",
 					limit:'number'
+				}
+			}
+		});
+		validate({
+			id:"nb",
+			tipPlacement:function(element,tip){
+				element.closest('.common').find('.tip').html(tip);
+			},
+			rules:{
+				'c':{
+					wrong:"您没有选择",
+					right:"",
+					empty:'您没有选择',
+					focus:"请选择",
+					required:true,
+					limit:/[^0]/
+				},
+				'd':{
+					wrong:"请选择checkbox",
+					right:"",
+					empty:'请选择checkbox',
+					focus:"请选择checkbox",
+					required:true,
+					limit:'1'//选择的个数 
+				},
+				'e':{
+					wrong:"请选择radio",
+					right:"",
+					empty:'请选择radio',
+					focus:"请选择radio",
+					required:true,
+					limit:'1'
+				}
+			}
+		});
+		validate({
+			id:"nc",
+			tipPlacement:function(element,tip){
+				element.closest('.common').find('.tip').html(tip);
+			},
+			rules:{
+				'f':{
+					wrong:"您输入的不是日期",
+					right:"",
+					empty:'日期不能为空',
+					focus:"请您输入日期",
+					required:true,
+					limit:"isDate"
 				}
 			}
 		});
