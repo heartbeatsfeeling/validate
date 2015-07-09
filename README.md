@@ -1,5 +1,5 @@
-<h1>使用方法</h1>
-<h2>html</h2>
+<h2>基本使用方法</h2>
+<h3>html</h3>
 ```html
 <div class="form-group common">
 	<label>中文验证：</label>
@@ -7,7 +7,7 @@
 	<div class="tip"></div>
 </div>
 ```
-<h2>js</h2>
+<h3>js</h3>
 ```js
 validate({
 	id:"na",//验证器名称
@@ -26,7 +26,7 @@ validate({
 	}
 });
 ```
-<h2>调用</h2>
+<h3>调用</h3>
 ```js
 validate.get('na').valid()//返回na这个验证器的验证结果
 validate.get('na').valid('a')//返回name=a节点的验证结果
@@ -34,7 +34,25 @@ validate.get('na').valid('a')//返回name=a节点的验证结果
 <p>
 	对limit说明：可以传入正则，或插件自带验证函数number,string,phone,email等，也可以自定义验证规则
 </p>
-<h2>自带验证规则：</h2>
+<h1>自定义验证规则</h1>
+```js
+validate.addMethod.isDate=function(options){//日期验证
+	var $element=options.element;
+	var value=$element.val();
+	if(!value){
+		options.tipPlacement($element,options.empty);
+		return false;
+	}else if(!isNaN(Date.parse(value)) &&Date.parse(value)>0 ){
+		options.tipPlacement($element,options.right);
+		return true;
+	}else{
+		options.tipPlacement($element,options.wrong);
+		return false;
+	}
+};
+```
+<p>调用方法同上</p>
+<h3>自带验证规则：</h3>
 <ul>
 	<li>
 		<h4 class='tit'>number 验证纯数字</h4>
