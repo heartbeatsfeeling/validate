@@ -38,7 +38,7 @@ validate.get('na').valid('a')//返回name=a节点的验证结果
 	<dt>可以传入插件自带验证方法或自定义方法</dt>
 	<dd>例如：limit:'number' 验证纯数字</dd>
 	<dt>可以传入长度</dt>
-	<dd>例如：limit:1 例如checkbox选中的个数</dd>
+	<dd>例如：limit:1 checkbox选中的个数</dd>
 </dl>
 <h2>对length的说明</h2>
 <dl>
@@ -59,7 +59,7 @@ validate.get('na').valid('a')//返回name=a节点的验证结果
 				focus:"请你输入该项",
 				required:true,
 				length:"2~5",
-				limit:'number'
+				limit:'number'//2-5位纯数字
 			}
 		}
 	})
