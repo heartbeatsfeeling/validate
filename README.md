@@ -1,4 +1,5 @@
-<h2></h2>
+<h1>使用方法</h1>
+<h2>html</h2>
 ```html
 <div class="form-group common">
 	<label>中文验证：</label>
@@ -6,6 +7,7 @@
 	<div class="tip"></div>
 </div>
 ```
+<h2>js</h2>
 ```js
 validate({
 	id:"na",//验证器名称
@@ -23,6 +25,11 @@ validate({
 		}
 	}
 });
+```
+<h2>调用</h2>
+```js
+validate.get('na').valid()//返回na这个验证器的验证结果
+validate.get('na').valid('a')//返回name=a节点的验证结果
 ```
 <h3>自带验证规则：</h3>
 <ul>
