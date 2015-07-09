@@ -31,7 +31,10 @@ validate({
 validate.get('na').valid()//返回na这个验证器的验证结果
 validate.get('na').valid('a')//返回name=a节点的验证结果
 ```
-<h3>自带验证规则：</h3>
+<p>
+	对limit说明：可以传入正则，或插件自带验证函数number,string,phone,email等，也可以自定义验证规则
+</p>
+<h2>自带验证规则：</h2>
 <ul>
 	<li>
 		<h4 class='tit'>number 验证纯数字</h4>
