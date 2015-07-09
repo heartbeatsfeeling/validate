@@ -49,6 +49,7 @@
 		});
 		rules[config.id] = config.rules;
 	};
+	validate.version='1.1';
 	validate.addMethod = {
 		phone:function(options){//手机号码
 			var reg = /^\d{11}$/;
