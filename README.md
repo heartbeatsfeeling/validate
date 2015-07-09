@@ -2,7 +2,7 @@
 <h3>html</h3>
 ```html
 <div class="form-group common">
-	<label>中文验证：</label>
+	<label>数字验证：</label>
 	<input type="text" name='a' class='form-control' >
 	<div class="tip"></div>
 </div>
@@ -22,6 +22,14 @@ validate({
 			focus:"请您输入该字段",//
 			required:true,//是否必填，为空为false或是不写，则为非必填（可以不写，写了就必需写正确）
 			limit:'number' //验证方法，number为插件自带验证方法，这里可以传入正则、字符串。具体见下文
+		},
+		'c':{
+			wrong:"请输入数字",//错误提示文字
+			right:"输入正确",//正确后提示文字
+			empty:'输入不能为空',//
+			focus:"请您输入该字段",//
+			required:true,
+			limit:/^\w+$/
 		}
 	}
 });
