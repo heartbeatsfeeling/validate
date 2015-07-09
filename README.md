@@ -16,12 +16,12 @@ validate({
 	},
 	rules:{
 		'a':{//name为a的节点，注意！别重复。
-			wrong:"请输入中文",//错误提示文字
+			wrong:"请输入数字",//错误提示文字
 			right:"输入正确",//正确后提示文字
 			empty:'输入不能为空',//
 			focus:"请您输入该字段",//
 			required:true,//是否必填，为空为false或是不写，则为非必填（可以不写，写了就必需写正确）
-			limit:/^[\u4e00-\u9fa5]+$/ //验证正则，这里也可以传入其它，见下文
+			limit:'number' //验证方法，number为插件自带验证方法，这里可以传入正则、字符串。具体见下文
 		}
 	}
 });
@@ -31,10 +31,45 @@ validate({
 validate.get('na').valid()//返回na这个验证器的验证结果
 validate.get('na').valid('a')//返回name=a节点的验证结果
 ```
-<p>
-	对limit说明：可以传入正则，或插件自带验证函数number,string,phone,email等，也可以自定义验证规则
-</p>
-<h1>自定义验证规则</h1>
+<h2>对limit的说明</h2>
+<dl>
+	<dt>可以传入正则</dt>
+	<dd>例如：limit:/^\d+/ 验证以数字开头</dd>
+	<dt>可以传入插件自带验证方法或自定义方法</dt>
+	<dd>例如：limit:'number' 验证纯数字</dd>
+	<dt>可以传入长度</dt>
+	<dd>例如：limit:1 例如checkbox选中的个数</dd>
+</dl>
+<h2>对length的说明</h2>
+<dl>
+	<dt>length 输入内容长度限定</dt>
+	<dd>length:'2~5' 只能输入二到五位。配合limit使用使如:</dd>
+</dl>
+```js
+	validate({
+		id:"nb",
+		tipPlacement:function(element,tip){
+			element.closest('.common').find('.tip').html(tip);
+		},
+		rules:{
+			'b':{
+				wrong:"请输入2-5位数字",
+				right:"",
+				empty:'输入项不能为空',
+				focus:"请你输入该项",
+				required:true,
+				length:"2~5",
+				limit:'number'
+			}
+		}
+	})
+```
+<h2>对require的说明</h2>
+<dl>
+	<dt>require</dt>
+	<dd>require:true,为必填。require:false 为选填，如果填写，则必需写对，换句话说就是得通过limit的验证。</dd>
+</dl>
+<h2>自定义验证规则</h2>
 ```js
 validate.addMethod.isDate=function(options){//日期验证
 	var $element=options.element;
