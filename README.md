@@ -14,14 +14,14 @@
 	</li>
 </ul>
 <h2></h2>
-...html
+```html
 <div class="form-group common">
 <label>中文验证：</label>
 <input type="text" name='a' class='form-control' >
 <div class="tip"></div>
 </div>
-...
-...js
+```
+```js
 validate({
 			id:"na",
 			tipPlacement:function(element,tip){
@@ -38,7 +38,7 @@ validate({
 				}
 			}
 		});
-...
+```
 
 <p>2015-07-09:发布第一版</p>
 <p>2015-05-27:基于jquery的一个简单验证插件 version:0.1</p>
