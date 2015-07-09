@@ -43,7 +43,7 @@ validate.get('na').valid('a')//返回name=a节点的验证结果
 <h2>对length的说明</h2>
 <dl>
 	<dt>length 输入内容长度限定</dt>
-	<dd>length:'2~5' 只能输入二到五位。配合limit使用使如:</dd>
+	<dd>length:'2~5' 只能输入二到五位。配合limit使用例如:</dd>
 </dl>
 ```js
 	validate({
