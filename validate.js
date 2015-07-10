@@ -226,7 +226,7 @@
 	var create = function(id) {
 		this.element = rules[id];
 	};
-	create.prototype = { //最后验证有错误，先放着
+	create.prototype = { 
 		valid: function(id) {
 			var _this = this;
 			var result = true;
