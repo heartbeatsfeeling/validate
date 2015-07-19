@@ -21,7 +21,7 @@
 			//整理数据
 			item = $.extend({}, defaultOptions, item);
 			total[key] = item;
-			if(eventType!=='click'){
+			if(eventType!=='click'&&item.focus){
 				$element.on('focus', function() {
 					_focus(item);
 				});
@@ -51,6 +51,12 @@
 	};
 	validate.version='1.1';
 	validate.addMethod = {
+		'zh-cn':function(){//中文验证
+			var reg = /^[\u4e00-\u9fa5]+$/
+			options.limit = reg;
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
+		},
 		phone:function(options){//手机号码
 			var reg = /^\d{11}$/;
 			options.limit = reg;
