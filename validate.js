@@ -1,9 +1,10 @@
+//https://github.com/heartbeatsfeeling/validate
 ;
 (function($) {
 	var rules = {};
 	var list = {};
 	var total = {};
-	var defaultOptions = {
+	var defaultOptions = {//默认提示配置
 		empty: '输入项不能为空',
 		wrong: "输入有错误",
 		right: "",
@@ -21,7 +22,7 @@
 			//整理数据
 			item = $.extend({}, defaultOptions, item);
 			total[key] = item;
-			if(eventType!=='click'){
+			if (eventType !== 'click') {
 				$element.on('focus', function() {
 					_focus(item);
 				});
@@ -49,27 +50,33 @@
 		});
 		rules[config.id] = config.rules;
 	};
-	validate.version='1.1';
+	validate.version = '1.1';
 	validate.addMethod = {
-		phone:function(options){//手机号码
+		'zh-cn':function(options){//中文
+			var reg =/^[\u4e00-\u9fa5]+$/;
+			options.limit = reg;
+			var eventType = _getElementType(options.element);
+			return _events[eventType](options);
+		},
+		phone: function(options) { //手机号码
 			var reg = /^\d{11}$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		string:function(options){//字符串
+		string: function(options) { //字符串
 			var reg = /^[A-Za-z]+$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		number: function(options) {//纯数字
+		number: function(options) { //纯数字
 			var reg = /^\d+$/;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
 			return _events[eventType](options);
 		},
-		email: function(options) {//电子邮件
+		email: function(options) { //电子邮件
 			var reg = /^[\w.-]+?@[a-z0-9]+?\.[a-z]{2,6}$/i;
 			options.limit = reg;
 			var eventType = _getElementType(options.element);
@@ -135,12 +142,12 @@
 			var tipPlacement = options.tipPlacement
 			var classNames = '';
 			var validText = '';
-			var length=options.length?options.length.split('~'):'';
-			var minLength=0;
-			var maxLength=Infinity;
-			if(length){
-				minLength=length[0];
-				maxLength=length[1]?length[1]:Infinity;
+			var length = options.length ? options.length.toString().split('~') : '';
+			var minLength = 0;
+			var maxLength = Infinity;
+			if (length) {
+				minLength = length[0];
+				maxLength = length[1] ? length[1] : minLength;
 			};
 			if ($element.is(":hidden")) { //隐藏
 				classNames = _classNames.right.join('');
@@ -165,7 +172,7 @@
 				}
 			} else {
 				if (options.required) {
-					if (!limit || $.type(limit) === 'regexp' && limit.test(value)&&(value.length>=minLength&&value.length<=maxLength) ) {
+					if (!limit || $.type(limit) === 'regexp' && limit.test(value) && (value.length >= minLength && value.length <= maxLength)) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
 						_setInputClass($element, _classNames.input.total, _classNames.input.right);
@@ -179,7 +186,7 @@
 						return false;
 					}
 				} else {
-					if (!limit || $.type(limit) === 'regexp' && limit.test(value) &&(value.length>=minLength&&value.length<=maxLength) ) {
+					if (!limit || $.type(limit) === 'regexp' && limit.test(value) && (value.length >= minLength && value.length <= maxLength)) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
 						_setInputClass($element, _classNames.input.total, _classNames.input.right);
@@ -226,7 +233,7 @@
 	var create = function(id) {
 		this.element = rules[id];
 	};
-	create.prototype = { 
+	create.prototype = {
 		valid: function(id) {
 			var _this = this;
 			var result = true;
@@ -254,9 +261,9 @@
 					fn = validate.addMethod[limit];
 					if ($.type(fn) === 'function') {
 						return fn(options)
-					} else if($.type(_events[eventType]) == 'function'){
+					} else if ($.type(_events[eventType]) == 'function') {
 						return _events[eventType](options)
-					}else {
+					} else {
 						return false;
 					}
 					break;
