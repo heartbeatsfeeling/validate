@@ -133,18 +133,20 @@
 	};
 	var _events = {
 		blur: function(options) { //核心验证方法
-			var $element = options.element;
-			var value = $.trim($element.val());
-			var limit = options.limit;
-			var wrongText = options.wrong;
-			var emptyText = options.empty;
-			var rightText = options.right;
-			var tipPlacement = options.tipPlacement
-			var classNames = '';
-			var validText = '';
-			var length=options.length?options.length.toString().split('~'):'';
-			var minLength=0;
-			var maxLength=Infinity;
+			var $element = options.element,
+				value = $.trim($element.val()),
+				limit = options.limit,
+				wrongText = options.wrong,
+				emptyText = options.empty,
+				rightText = options.right,
+				tipPlacement = options.tipPlacement,
+				classNames = '',
+				validText = '',
+				length=options.length?options.length.toString().split('~'):'',
+				minLength=0,
+				maxLength=Infinity,
+				result=true,
+				currentClass='';
 			if(length){
 				minLength=length[0];
 				maxLength=length[1]?length[1]:minLength;
@@ -152,81 +154,80 @@
 			if ($element.is(":hidden")) { //隐藏
 				classNames = _classNames.right.join('');
 				validText = '';
-				_setInputClass($element, _classNames.input.total, _classNames.input.right);
-				_tipPlacementRender($element, classNames, validText, tipPlacement)
-				return true;
+				currentClass=_classNames.input.right;
+				result=true;
 			};
 			if (!value || value === options.defaultValue) { //为空
 				if (options.required) { //必填
 					classNames = _classNames.empty.join('');
 					validText = emptyText;
-					_setInputClass($element, _classNames.input.total, _classNames.input.empty);
-					_tipPlacementRender($element, classNames, validText, tipPlacement)
-					return false;
+					currentClass=_classNames.input.empty;
+					result=false;
 				} else {
 					classNames = _classNames.right.join('');
 					validText = rightText;
-					_setInputClass($element, _classNames.input.total, _classNames.input.right);
-					_tipPlacementRender($element, classNames, validText, tipPlacement)
-					return true;
+					currentClass=_classNames.input.right;
+					result=true;
 				}
 			} else {
 				if (options.required) {
 					if (!limit || $.type(limit) === 'regexp' && limit.test(value)&&(value.length>=minLength&&value.length<=maxLength) ) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
-						_setInputClass($element, _classNames.input.total, _classNames.input.right);
-						_tipPlacementRender($element, classNames, validText, tipPlacement);
-						return true;
+						currentClass=_classNames.input.right;
+						result=true;
 					} else {
 						classNames = _classNames.wrong.join('');
 						validText = wrongText;
-						_setInputClass($element, _classNames.input.total, _classNames.input.wrong);
-						_tipPlacementRender($element, classNames, validText, tipPlacement)
-						return false;
+						currentClass=_classNames.input.wrong;
+						result=false;
 					}
 				} else {
 					if (!limit || $.type(limit) === 'regexp' && limit.test(value) &&(value.length>=minLength&&value.length<=maxLength) ) {
 						classNames = _classNames.right.join('');
 						validText = rightText;
-						_setInputClass($element, _classNames.input.total, _classNames.input.right);
-						_tipPlacementRender($element, classNames, validText, tipPlacement)
-						return true;
+						currentClass=_classNames.input.right;
+						result=true;
 					} else {
 						classNames = _classNames.wrong.join('');
 						validText = wrongText;
-						_setInputClass($element, _classNames.input.total, _classNames.input.wrong);
-						_tipPlacementRender($element, classNames, validText, tipPlacement)
-						return false;
+						currentClass=_classNames.input.wrong;
+						result=false;
 					}
 				}
 			};
+			_setInputClass($element, _classNames.input.total, currentClass);
+			_tipPlacementRender($element, classNames, validText, tipPlacement)
+			return result;
 		},
 		change: function(options) {
 			return _events.blur(options);
 		},
 		click: function(options) {
-			var $element = options.element;
-			var limit = options.limit;
-			var wrongText = options.wrong;
-			var emptyText = options.empty;
-			var rightText = options.right;
-			var tipPlacement = options.tipPlacement
-			var classNames = '';
-			var validText = '';
+			var $element = options.element,
+				limit = options.limit,
+				wrongText = options.wrong,
+				emptyText = options.empty,
+				rightText = options.right,
+				tipPlacement = options.tipPlacement,
+				classNames = '',
+				validText = '',
+				result=true,
+				currentClass='';
 			if ($element.filter(":checked").length >= limit) {
 				classNames = _classNames.right.join('');
 				validText = rightText;
-				_setInputClass($element, _classNames.input.total, _classNames.input.right);
-				_tipPlacementRender($element, classNames, validText, tipPlacement)
-				return true;
+				currentClass=_classNames.input.right;
+				result=true;
 			} else {
 				classNames = _classNames.wrong.join('');
 				validText = wrongText;
-				_setInputClass($element, _classNames.input.total, _classNames.input.wrong);
-				_tipPlacementRender($element, classNames, validText, tipPlacement)
-				return false;
-			}
+				currentClass=_classNames.input.wrong;
+				result=false;
+			};
+			_setInputClass($element, _classNames.input.total, currentClass);
+			_tipPlacementRender($element, classNames, validText, tipPlacement)
+			return result;
 		}
 	}
 	var noop = function() {};
