@@ -109,6 +109,9 @@ validate.addMethod.isDate=function(options){//日期验证
 	<li>
 		<h4 class='tit'>phone  验证手机号码</h4>
 	</li>
+	<li>
+		<h4 class='tit'>zh-cn  验证中文</h4>
+	</li>
 </ul>
 <p>2015-07-09:发布第一版</p>
 <p>2015-05-27:基于jquery的一个简单验证插件 version:0.1</p>
