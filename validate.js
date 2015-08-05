@@ -13,10 +13,10 @@
 	var validate = function(config) {
 		var _this = this;
 		$.each(config.rules, function(key, item) {
-			var $element = $("[name='" + key + "']");
-			var limit = item.limit;
-			var limitType = $.type(limit);
-			var eventType = _getElementType($element);
+			var $element = $("[name='" + key + "']"),
+				limit = item.limit,
+				limitType = $.type(limit),
+			 	eventType = _getElementType($element);
 			item.tipPlacement = item.tipPlacement || config.tipPlacement || noop;
 			item.element = $element;
 			//整理数据
@@ -100,10 +100,10 @@
 		}
 	};
 	var _getElementType = function(element) { //得到事件类型
-		var $element = element;
-		var nodeName = $element.prop('nodeName').toLowerCase();
-		var elementType = $element.prop('type');
-		var eventType = 'blur';
+		var $element = element,
+			nodeName = $element.prop('nodeName').toLowerCase(),
+			elementType = $element.prop('type'),
+			eventType = 'blur';
 		if (nodeName == 'select') {
 			eventType = 'blur';
 		} else {
@@ -119,9 +119,9 @@
 		element.removeClass(removeClass).addClass(addClass)
 	};
 	var _focus = function(options) {
-		var tipPlacement = options.tipPlacement;
-		var focusText = options.focus;
-		var $element = options.element
+		var tipPlacement = options.tipPlacement,
+			focusText = options.focus,
+			$element = options.element;
 		if (focusText) {
 			_setInputClass($element, _classNames.input.total, _classNames.input.focus);
 			_tipPlacementRender($element, _classNames.focus.join(''), focusText, tipPlacement)
@@ -236,8 +236,8 @@
 	};
 	create.prototype = { 
 		valid: function(id) {
-			var _this = this;
-			var result = true;
+			var _this = this,
+				result = true;
 			if (id) {
 				result = _this.validHander(id)
 			} else {
@@ -248,11 +248,11 @@
 			return result;
 		},
 		validHander: function(id) {
-			var options = total[id];
-			var limit = options.limit;
-			var limitType = $.type(limit);
-			var fn = noop;
-			var eventType = _getElementType(options.element);
+			var options = total[id],
+				limit = options.limit,
+				limitType = $.type(limit),
+				fn = noop,
+				eventType = _getElementType(options.element);
 			switch (limitType) {
 				case 'regexp':
 				case 'undefined':
@@ -272,9 +272,9 @@
 			}
 		},
 		triggerValid: function(id, type) {
-			var options = total[id];
-			var $element = options.element;
-			var tipPlacement = options.tipPlacement
+			var options = total[id],
+				$element = options.element,
+				tipPlacement = options.tipPlacement;
 			_tipPlacementRender($element, _classNames[type], options[type], tipPlacement);
 		}
 	};
