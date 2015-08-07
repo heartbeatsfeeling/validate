@@ -6,6 +6,11 @@
 	<input type="text" name='a' class='form-control' >
 	<div class="tip"></div>
 </div>
+<div class="form-group common">
+	<label>数字验证：</label>
+	<input type="text" name='c' class='form-control' >
+	<div class="tip"></div>
+</div>
 ```
 <h3>js</h3>
 ```js
