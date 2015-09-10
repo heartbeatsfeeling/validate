@@ -1,3 +1,8 @@
+<h1>最近计划</h1>
+<ul>
+	<li>增加 equal 等于某个字段</li>
+	<li>增加 defaultValue 默认文字</li>
+</ul>
 <h2>基本使用方法</h2>
 <h3>html</h3>
 ```html
